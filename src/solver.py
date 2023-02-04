@@ -44,7 +44,7 @@ def solve_root_at_zero(function: Callable[[Tuple], Tuple], /, *,
 
 def perform_corece(args: Dict[str, type], res: np.ndarray, tol: float) -> Dict[str, Union[float, int]]:
     """
-    Try coerce `float` to `int` for `res` if its corresponding `arg` is specified as `int`.
+    Try to coerce `float` to `int` or `Fraction` for `res`, if its corresponding `arg` is specified.
     Coerce is successful if rounding is within `tol`.
     Return empty dict if any coercion failed.
     """
