@@ -1,3 +1,4 @@
+from fractions import Fraction
 from typing import Callable, Tuple, Dict, Union
 
 import numpy as np
@@ -48,12 +49,15 @@ def perform_corece(args: Dict[str, type], res: np.ndarray, tol: float) -> Dict[s
     Return empty dict if any coercion failed.
     """
     require("Tolerance is greater than 0", tol, lambda t: t > 0)
+
+    type_to_round_func = {
+        int: round,
+        Fraction: lambda x: Fraction(x).limit_denominator(int(1 / tol))
+    }
+
     ans = {}
     for (name, arg_type), result in zip(args.items(), res):
-        if arg_type != int:
-            ans[name] = result
-            continue
-        rounded = round(result)
+        rounded = type_to_round_func.get(arg_type, float)(result)
         if abs(rounded - result) > tol:
             return {}
         ans[name] = rounded
