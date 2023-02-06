@@ -4,9 +4,9 @@ from typing import Callable, Tuple, Dict, Union
 import numpy as np
 from scipy.optimize import fsolve
 
-from src.control_flow import or_default_arg, require
-from src.initial_guess import values_from
-from src.stop_solve import stop_after_tries
+from .control_flow import or_default_arg, require
+from .initial_guess import values_from
+from .stop_solve import stop_after_tries
 
 
 def solve_root_at_zero(function: Callable[[Tuple], Tuple], /, *,

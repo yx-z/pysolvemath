@@ -1,6 +1,6 @@
 from typing import Callable
 
-from src.control_flow import require
+from .control_flow import require
 
 
 def stop_after_tries(max_tries: int, /) -> Callable[[], bool]:

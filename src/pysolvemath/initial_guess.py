@@ -3,7 +3,7 @@ from typing import Tuple, Iterable, List
 
 import numpy as np
 
-from src.control_flow import or_default_arg
+from .control_flow import or_default_arg
 
 
 def values_from(dimension: int, values: List[float] = None) -> Iterable[Tuple[float]]:

@@ -2,7 +2,7 @@ import ast
 import inspect
 from typing import Callable, Dict, List, Tuple
 
-from src.control_flow import require, require_none
+from .control_flow import require, require_none
 
 
 def check_and_get_arg_names(function: Callable[..., None], /) -> Dict[str, type]:

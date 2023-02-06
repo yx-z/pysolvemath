@@ -1,8 +1,9 @@
 from typing import Callable, Dict, Tuple
 
-from solver import solve_root_at_zero
-from src.parsing import check_and_get_arg_names, parse_as_expressions, corece_to_equality, get_solver_function_code, \
+from .parsing import check_and_get_arg_names, parse_as_expressions, corece_to_equality, \
+    get_solver_function_code, \
     get_solver_function
+from .solver import solve_root_at_zero
 
 
 def solve_equations(eq_function: Callable[..., None], /, *,
