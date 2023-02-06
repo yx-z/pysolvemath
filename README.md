@@ -1,7 +1,15 @@
 # pysolvemath
 Numeric Solver.
 
+## Install
+
+```
+pip install pysolvemath
+```
+
 ## Usage
+
+Due to limilation of `inspect`. The package can only be called in a Python script context (e.g. `xxx.py`), but not IPython (interactive terminal).
 
 ### Real-valued Equations
 
