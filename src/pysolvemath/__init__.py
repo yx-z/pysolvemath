@@ -1,4 +1,5 @@
-from typing import Callable, Dict, Tuple
+import fractions
+from typing import Callable, Dict, Tuple, Union
 
 from .parsing import check_and_get_arg_names, parse_as_expressions, corece_to_equality, \
     get_solver_function_code, \
@@ -10,7 +11,7 @@ def solve_equations(eq_function: Callable[..., None], /, *,
                     init_guess_func: Callable[[int], Tuple[float]] = None,
                     stop_func: Callable[[], bool] = None,
                     max_tries: int = 10,
-                    tol: float = 1e-3) -> Dict[str, float]:
+                    tol: float = 1e-3) -> Dict[str, Union[int, float, fractions.Fraction]]:
     """
     :param eq_function: function containing equations. Parameters are unknowns.
     :param init_guess_func: eq_function that given `dimension`: int, return a list of initial guess of the same dimension

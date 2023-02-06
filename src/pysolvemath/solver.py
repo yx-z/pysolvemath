@@ -14,7 +14,7 @@ def solve_root_at_zero(function: Callable[[Tuple], Tuple], /, *,
                        init_guess_func: Callable[[int], Tuple[float]],
                        stop_func: Callable[[], bool],
                        max_tries: int,
-                       tol: float = 1e-3) -> np.ndarray:
+                       tol: float = 1e-3) -> Dict[str, Union[float, int, Fraction]]:
     """
     :param function: function to solve for `function(vector_params) == 0`
     "param args: <arg_name, type> info
@@ -42,7 +42,7 @@ def solve_root_at_zero(function: Callable[[Tuple], Tuple], /, *,
     raise RuntimeError(f"solution not found: {msg}")
 
 
-def perform_corece(args: Dict[str, type], res: np.ndarray, tol: float) -> Dict[str, Union[float, int]]:
+def perform_corece(args: Dict[str, type], res: np.ndarray, tol: float) -> Dict[str, Union[float, int, Fraction]]:
     """
     Try to coerce `float` to `int` or `Fraction` for `res`, if its corresponding `arg` is specified.
     Coerce is successful if rounding is within `tol`.

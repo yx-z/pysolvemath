@@ -50,10 +50,11 @@ def get_solver_function_code(args: List[str], equalities: List[Tuple[ast.Expr, a
     require("number of equations are at least number of unknowns", equalities, lambda e: len(e) >= dimension)
 
     equal_zeroes = [f"{ast.unparse(lhs)}-{ast.unparse(rhs)}" for lhs, rhs in equalities]
+    # `scipy.optimize.fsolve` requires # unknowns == # equations. Hence combine extra equations into one.
     extra_combined = "+".join(f"({exprs})**2" for exprs in equal_zeroes[dimension - 1:])
     args_joined = "_".join(args)
 
-    func_code = f"""\
+    func_code = f"""
 def pysolvemath({args_joined}):
     {','.join(args)} = {args_joined}
     return {','.join(equal_zeroes[:dimension - 1] + [extra_combined])}
