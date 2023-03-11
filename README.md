@@ -9,7 +9,7 @@ pip install pysolvemath
 
 ## Usage
 
-Due to limilation of `inspect`. The package can only be called in a Python script context (e.g. `xxx.py`), but not IPython (interactive terminal).
+Due to limilation of `inspect`. The package can only be called in a Python script context (e.g. `xxx.py`), or Jupyter Notebook, but not Python IDLE (interactive shell).
 
 ### Real-valued Equations
 
