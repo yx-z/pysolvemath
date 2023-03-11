@@ -1,6 +1,6 @@
 import ast
 import inspect
-from typing import Callable, Dict, List, Tuple
+from typing import Callable, Dict, List, Tuple, Iterable
 
 from .control_flow import require, require_none
 
@@ -42,10 +42,11 @@ def corece_to_equality(expr: ast.Expr) -> Tuple[ast.Expr, ast.Expr]:
     return comp.left, comp.comparators[0]
 
 
-def get_solver_function_code(args: List[str], equalities: List[Tuple[ast.Expr, ast.Expr]]) -> ast.FunctionDef:
+def get_solver_function_code(args: Iterable[str], equalities: List[Tuple[ast.Expr, ast.Expr]]) -> ast.FunctionDef:
     """
     Given a list of arg names and equalty expressions, convert to a single function that scipy.optimize.fsolve understands.
     """
+    args = list(args)
     dimension = len(args)
     require("number of equations are at least number of unknowns", equalities, lambda e: len(e) >= dimension)
 

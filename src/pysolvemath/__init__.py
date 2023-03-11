@@ -1,10 +1,10 @@
 import fractions
 from typing import Callable, Dict, Tuple, Union
 
-from .parsing import check_and_get_arg_names, parse_as_expressions, corece_to_equality, \
-    get_solver_function_code, \
+from .parsing import check_and_get_arg_names, parse_as_expressions, corece_to_equality, get_solver_function_code, \
     get_solver_function
-from .solver import solve_root_at_zero
+from .solve_equation import solve_root_at_zero
+from .solve_logic import solve_logic_query
 
 
 def solve_equations(eq_function: Callable[..., None], /, *,
@@ -31,3 +31,7 @@ def solve_equations(eq_function: Callable[..., None], /, *,
     function = get_solver_function(function_code)
     return solve_root_at_zero(function, args=args, init_guess_func=init_guess_func, stop_func=stop_func,
                               max_tries=max_tries, tol=tol)
+
+
+def solve_logic(knowledge, query):
+    return solve_logic_query(knowledge, query)

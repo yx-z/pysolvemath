@@ -1,12 +1,12 @@
+import itertools
 from fractions import Fraction
-from typing import Callable, Tuple, Dict, Union
+from typing import Callable, Dict, Union
+from typing import Tuple, Iterable, List
 
 import numpy as np
 from scipy.optimize import fsolve
 
 from .control_flow import or_default_arg, require
-from .initial_guess import values_from
-from .stop_solve import stop_after_tries
 
 
 def solve_root_at_zero(function: Callable[[Tuple], Tuple], /, *,
@@ -14,7 +14,7 @@ def solve_root_at_zero(function: Callable[[Tuple], Tuple], /, *,
                        init_guess_func: Callable[[int], Tuple[float]],
                        stop_func: Callable[[], bool],
                        max_tries: int,
-                       tol: float = 1e-3) -> Dict[str, Union[float, int, Fraction]]:
+                       tol: float) -> Dict[str, Union[float, int, Fraction]]:
     """
     :param function: function to solve for `function(vector_params) == 0`
     "param args: <arg_name, type> info
@@ -42,6 +42,28 @@ def solve_root_at_zero(function: Callable[[Tuple], Tuple], /, *,
     raise RuntimeError(f"solution not found: {msg}")
 
 
+def values_from(dimension: int, values: List[float] = None) -> Iterable[Tuple[float]]:
+    """
+    :param dimension: dimension of problem space
+    :param values: initial guesses per value
+    :return: generating lists, each list has length `dimension` and contains values from one of `values`
+             The generation order is stable.
+    """
+    values = or_default_arg(values, [-1e5, -1.0, 0.0, 1.0, 1e5])
+    return itertools.product(*itertools.repeat(values, dimension))
+
+
+def random_values(dimension: int, *, lower_bound: float = -1e5, upper_bound: float = 1e5) -> Iterable[Tuple[float]]:
+    """
+    :param dimension: dimension of problem space
+    :param lower_bound: inclusive lower bound of generated random value
+    :param upper_bound: exclusive upper bound of generated random value
+    :return: an infinite generating sequence of random values specified by parameters
+    """
+    while True:
+        yield np.random.uniform(lower_bound, upper_bound, dimension)
+
+
 def perform_corece(args: Dict[str, type], res: np.ndarray, tol: float) -> Dict[str, Union[float, int, Fraction]]:
     """
     Try to coerce `float` to `int` or `Fraction` for `res`, if its corresponding `arg` is specified.
@@ -62,3 +84,22 @@ def perform_corece(args: Dict[str, type], res: np.ndarray, tol: float) -> Dict[s
             return {}
         ans[name] = rounded
     return ans
+
+
+def stop_after_tries(max_tries: int, /) -> Callable[[], bool]:
+    """
+    :param max_tries: max number of tries to solve (with different initial gusses)
+    :return: a stop_func that let solver stop after `max_tries`
+    """
+    require("max_tries: int must be greater than 0", max_tries, lambda x: x > 0)
+
+    num_tries = 0
+
+    def _stop():
+        nonlocal num_tries
+        if num_tries > max_tries:
+            return True
+        num_tries += 1
+        return False
+
+    return _stop
